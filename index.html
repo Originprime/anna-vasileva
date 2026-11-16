@@ -65,7 +65,8 @@ section{padding-top:28px}
 .facts span{font-size:13px;color:var(--ink2)}
 
 /* buttons */
-.cta-label{text-align:center;font-weight:600;font-size:14px;color:var(--ink2);margin:18px 0 8px}
+.cta-label{text-align:center;font-weight:600;font-size:14px;color:var(--ink2);margin:16px 0 12px}
+.cover .wrap{padding-bottom:22px}
 .btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .pill{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:26px;font:700 15px/1.2 Montserrat,sans-serif;text-decoration:none;transition:background .15s}
 .pill svg{width:20px;height:20px;flex:none}
@@ -77,12 +78,14 @@ section{padding-top:28px}
 .pill-white:hover{background:var(--surf)}
 
 /* promise */
+.promise{margin:0 -20px;padding:24px 20px;border-top:1px solid rgba(0,0,0,.14);border-bottom:1px solid rgba(0,0,0,.14)}
 .promise .lead{font:700 19px/1.37 Montserrat,sans-serif;margin-bottom:10px}
 .promise p{font-size:15px;line-height:1.55}
 
 /* accordions */
 .acc{display:grid;gap:8px}
-.acc .hint{font-size:14px;color:var(--ink2);margin:4px 0 6px}
+.acc .hint{font-size:14px;color:var(--ink2);margin:4px 0 10px}
+.acc>h2{margin-bottom:8px}
 details{border:1px solid var(--line);border-radius:16px;background:#fff;transition:background .15s}
 details[open]{background:var(--surf);border-color:var(--surf)}
 summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:16px;font:600 16px/1.38 Montserrat,sans-serif}
@@ -111,15 +114,16 @@ details .body{padding:0 16px 16px;font-size:15px;line-height:1.55;color:var(--in
 .dots i.on{width:18px;background:var(--acc)}
 
 /* fit */
-.dots-list{list-style:none;display:grid;gap:12px;margin-top:12px}
+.dots-list{list-style:none;display:grid;gap:6px;margin-top:12px}
 .dots-list li{display:flex;gap:10px;font-size:15px;line-height:1.47}
 .dots-list li::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--acc);margin-top:7px}
-.warn{display:flex;gap:10px;align-items:center;background:var(--surf);border-radius:12px;padding:12px 14px;margin-top:16px;font-weight:600;font-size:14px;line-height:1.43}
+.warn{display:flex;gap:10px;align-items:center;background:var(--surf);border-radius:12px;padding:12px 14px;margin-top:17px;font-weight:600;font-size:14px;line-height:1.43}
 .warn svg{flex:none;width:20px;height:20px;color:var(--acc)}
 .todo{background:#FFF3C4;color:#6B4E00;padding:2px 6px;border-radius:6px}
 
 /* final band */
-.band{background:var(--acc);color:#fff;margin-top:36px;padding:28px 0}
+.band{background:var(--acc);color:#fff;margin:28px auto 0;max-width:600px;padding:28px 0;border-radius:20px 20px 0 0}
+@media (min-width:601px){body{background:var(--surf)}main{background:#fff;max-width:600px;margin:0 auto}}
 .band h2{text-align:center;font-size:20px;line-height:1.35;margin-bottom:14px}
 footer{border-top:1px solid rgba(255,255,255,.2);margin-top:28px;padding-top:20px;text-align:center;display:grid;gap:8px}
 footer a{font-weight:600;font-size:13px;color:rgba(255,255,255,.9)}
@@ -151,7 +155,23 @@ dialog:focus{outline:none}
 
 a:focus-visible,summary:focus-visible,.x:focus-visible{outline:3px solid var(--acc);outline-offset:3px}
 .band a:focus-visible{outline-color:#fff}
-@media (min-width:600px){.car{margin:12px 0 0;padding:0 0 4px}}
+/* стрелки карусели — только для мыши */
+.steps-head{display:flex;align-items:flex-end;gap:12px}
+.steps-head>div:first-child{flex:1}
+.arrows{display:none;gap:8px;flex:none}
+.arrows button{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--acc);background:#fff;color:var(--acc);cursor:pointer;display:grid;place-items:center;transition:background .15s,opacity .15s}
+.arrows button:hover:not(:disabled){background:var(--surf)}
+.arrows button:disabled{opacity:.3;cursor:default}
+.arrows svg{width:20px;height:20px}
+@media (hover:hover) and (pointer:fine){.arrows{display:flex}}
+/* широкий экран: шаги списком, без карусели */
+@media (min-width:601px){
+  .arrows,.dots,.steps-head p{display:none}
+  .car{display:grid;gap:10px;overflow:visible;margin:14px 0 0;padding:0}
+  .car li{display:grid;grid-template-columns:56px 1fr;column-gap:16px;padding:20px 22px}
+  .car .n{grid-row:span 2;margin:0}
+  .car h3{margin-bottom:4px}
+}
 </style>
 </head>
 <body>
@@ -168,8 +188,8 @@ a:focus-visible,summary:focus-visible,.x:focus-visible{outline:3px solid var(--a
     <div class="wrap">
       <header class="hero">
         <img class="avatar" src="img/anna-vasileva.png" width="120" height="120" alt="Васильева Анна Петровна, акушер-гинеколог">
-        <h1>Васильева Анна Петровна</h1>
-        <p class="muted">Врач акушер-гинеколог,<br>врач ультразвуковой диагностики</p>
+        <h1>Анна Васильева</h1>
+        <p class="muted">Акушер-гинеколог, врач УЗИ-диагностики</p>
       </header>
 
       <!-- TODO: указать цену -->
@@ -203,13 +223,19 @@ a:focus-visible,summary:focus-visible,.x:focus-visible{outline:3px solid var(--a
       <details><summary><span>Менопауза и МГТ</span><i class="tog"><svg><use href="#i-down"/></svg></i></summary><div class="body">Перименопауза, менопауза, менопаузальная гормональная терапия.</div></details>
       <details><summary><span>Второе мнение по анализам и УЗИ</span><i class="tog"><svg><use href="#i-down"/></svg></i></summary><div class="body">Разбор анализов, УЗИ, ранее поставленных диагнозов и назначенного лечения.</div></details>
       <a class="more-link" href="TG_LINK" target="_blank" rel="noopener">
-        <div><b>Нет вашего вопроса?</b><span>Опишите ситуацию в сообщении — помогу понять, какие обследования и действия действительно нужны</span></div>
+        <div><b>Нет вашего вопроса?</b><span>Опишите ситуацию в сообщении</span></div>
         <svg><use href="#i-arrow"/></svg>
       </a>
     </section>
 
     <section aria-labelledby="h-steps">
-      <div class="steps-head"><h2 id="h-steps">Как проходит консультация</h2><p>5 шагов · листайте →</p></div>
+      <div class="steps-head">
+        <div><h2 id="h-steps">Как проходит консультация</h2><p>5 шагов · листайте →</p></div>
+        <div class="arrows">
+          <button type="button" id="prev" aria-label="Предыдущий шаг" disabled><svg style="transform:scaleX(-1)"><use href="#i-arrow"/></svg></button>
+          <button type="button" id="next" aria-label="Следующий шаг"><svg><use href="#i-arrow"/></svg></button>
+        </div>
+      </div>
       <ol class="car" id="car">
         <li><div class="n">01</div><h3>Запись</h3><p>Пишете в Telegram или MAX, согласуем удобные дату и время</p></li>
         <li><div class="n">02</div><h3>Подготовка</h3><p>Заполняете медицинскую анкету и присылаете анализы, заключения УЗИ и другие документы</p></li>
@@ -292,7 +318,7 @@ a:focus-visible,summary:focus-visible,.x:focus-visible{outline:3px solid var(--a
     });
   });
   // плавное появление блоков
-  var items=document.querySelectorAll('.avatar,.hero h1,.hero p,.facts,.cta-label,.btns,main .wrap>section,.band');
+  var items=document.querySelectorAll('.avatar,.hero h1,.hero p,.facts,.cta-label,.cover .btns,main .wrap>section,.band');
   items.forEach(function(el){el.classList.add('rv');});
   var shown=0;
   function show(el){el.style.transitionDelay=Math.min(shown++,6)*70+'ms';el.classList.add('in');setTimeout(function(){shown=Math.max(0,shown-1);},120);}
@@ -301,12 +327,17 @@ a:focus-visible,summary:focus-visible,.x:focus-visible{outline:3px solid var(--a
     items.forEach(function(el){io.observe(el);});
   }else items.forEach(function(el){el.classList.add('in');});
   // точки карусели
-  var car=document.getElementById('car'),dots=document.querySelectorAll('#dots i');
-  car.addEventListener('scroll',function(){
-    var w=car.firstElementChild.offsetWidth+10,i=Math.round(car.scrollLeft/w);
-    if(car.scrollLeft+car.clientWidth>=car.scrollWidth-4)i=dots.length-1;
+  var car=document.getElementById('car'),dots=document.querySelectorAll('#dots i'),prev=document.getElementById('prev'),next=document.getElementById('next');
+  function step(){return car.firstElementChild.offsetWidth+10;}
+  function sync(){
+    var i=Math.round(car.scrollLeft/step()),end=car.scrollLeft+car.clientWidth>=car.scrollWidth-4;
+    if(end)i=dots.length-1;
     dots.forEach(function(d,k){d.classList.toggle('on',k===i);});
-  },{passive:true});
+    prev.disabled=car.scrollLeft<4;next.disabled=end;
+  }
+  car.addEventListener('scroll',sync,{passive:true});
+  prev.addEventListener('click',function(){car.scrollBy({left:-step(),behavior:'smooth'});});
+  next.addEventListener('click',function(){car.scrollBy({left:step(),behavior:'smooth'});});
 })();
 </script>
 </body>
