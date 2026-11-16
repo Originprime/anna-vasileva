@@ -86,15 +86,16 @@ section{padding-top:28px}
 .acc{display:grid;gap:8px}
 .acc .hint{font-size:14px;color:var(--ink2);margin:4px 0 10px}
 .acc>h2{margin-bottom:8px}
-details{border:1px solid var(--line);border-radius:16px;background:#fff;transition:background .15s}
-details[open]{background:var(--surf);border-color:var(--surf)}
+details{border:1px solid var(--line);border-radius:16px;background:#fff;transition:background .35s ease,border-color .35s ease}
+details.is-open{background:var(--surf);border-color:var(--surf)}
 summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:16px;font:600 16px/1.38 Montserrat,sans-serif}
 summary::-webkit-details-marker{display:none}
 summary>span{flex:1}
-.tog{flex:none;width:28px;height:28px;border-radius:50%;background:var(--surf);color:var(--acc);display:grid;place-items:center;transition:transform .2s,background .15s}
+.tog{flex:none;width:28px;height:28px;border-radius:50%;background:var(--surf);color:var(--acc);display:grid;place-items:center;transition:transform .35s cubic-bezier(.4,0,.2,1),background .35s,color .35s}
 .tog svg{width:18px;height:18px}
-details[open] .tog{background:var(--acc);color:#fff;transform:rotate(180deg)}
-details .body{padding:0 16px 16px;font-size:15px;line-height:1.55;color:var(--ink2)}
+details.is-open .tog{background:var(--acc);color:#fff;transform:rotate(180deg)}
+details .body{padding:0 16px 16px;font-size:15px;line-height:1.55;color:var(--ink2);transition:opacity .3s ease}
+.js details:not(.is-open) .body{opacity:0}
 .more-link{display:flex;align-items:center;gap:10px;padding:14px 16px;border-radius:16px;box-shadow:inset 0 0 0 1.5px var(--acc);text-decoration:none}
 .more-link div{flex:1}
 .more-link b{display:block;font:700 15px/1.4 Montserrat,sans-serif;color:var(--acc)}
@@ -145,8 +146,6 @@ dialog:focus{outline:none}
   .js .rv.in{opacity:1;transform:none}
   .js .avatar.rv{transform:scale(.92)}
   .js .avatar.rv.in{transform:none}
-  details .body{animation:open .35s ease}
-  @keyframes open{from{opacity:0;transform:translateY(-6px)}}
   dialog[open]{animation:pop .25s cubic-bezier(.2,.7,.2,1)}
   dialog[open]::backdrop{animation:fade .25s ease}
   @keyframes pop{from{opacity:0;transform:translateY(12px) scale(.98)}}
@@ -311,10 +310,31 @@ a:focus-visible,summary:focus-visible,.x:focus-visible{outline:3px solid var(--a
   });
   if(location.hash)open(location.hash.slice(1));
   // вопрос-ответ: открыт только один блок в группе
+  // плавное раскрытие/сворачивание по высоте
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function slide(d,open){
+    if(d._want===open&&(d._anim||d.open===open))return;
+    d._want=open;
+    var s=d.querySelector('summary');
+    var start=d.offsetHeight;
+    if(d._anim){d._anim.cancel();}
+    d.classList.toggle('is-open',open);
+    if(open)d.open=true;
+    var end=open?d.offsetHeight:s.offsetHeight+(d.offsetHeight-d.clientHeight);
+    if(reduce||!d.animate){if(!open)d.open=false;return;}
+    d.style.overflow='hidden';
+    var a=d.animate({height:[start+'px',end+'px']},{duration:380,easing:'cubic-bezier(.4,0,.2,1)'});
+    d._anim=a;
+    a.onfinish=function(){d._anim=null;d.style.overflow='';if(!open)d.open=false;};
+    a.oncancel=function(){if(d._anim===a){d._anim=null;d.style.overflow='';}};
+  }
   document.querySelectorAll('.acc details').forEach(function(d){
-    d.addEventListener('toggle',function(){
-      if(!d.open)return;
-      d.parentElement.querySelectorAll('details[open]').forEach(function(o){if(o!==d)o.open=false;});
+    if(d.open)d.classList.add('is-open');
+    d.querySelector('summary').addEventListener('click',function(e){
+      e.preventDefault();
+      var open=!d.classList.contains('is-open');
+      if(open)d.parentElement.querySelectorAll('details.is-open').forEach(function(o){if(o!==d)slide(o,false);});
+      slide(d,open);
     });
   });
   // плавное появление блоков
