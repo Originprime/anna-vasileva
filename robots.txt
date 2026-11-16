@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://originprime.github.io/sitemap.xml
